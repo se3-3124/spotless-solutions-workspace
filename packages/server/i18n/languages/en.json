@@ -1,0 +1,6 @@
+{
+  "error_generic_start_failure": "Web server failed to start due to an exception",
+  "error_stack_trace": "Stack trace: {0}",
+  "http_listening": "Listening to port ({0}): {1}",
+  "http_starting": "Starting server..."
+}

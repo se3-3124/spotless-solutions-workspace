@@ -1,0 +1,17 @@
+{
+  "name": "spotless-solutions",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently -k \"npm run start -w server\" \"npm run dev -w client\""
+  },
+  "author": "UNIPRO",
+  "license": "BSD-3-Clause",
+  "workspaces": [
+    "packages/server",
+    "packages/client"
+  ],
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

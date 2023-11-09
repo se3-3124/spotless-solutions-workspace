@@ -1,0 +1,6 @@
+{
+  "error_generic_start_failure": "例外が発生したため、Webサーバーの起動に失敗しました。",
+  "error_stack_trace": "スタックトレース: {0}",
+  "http_listening": "ポート({0})をリッスンしています： {1}",
+  "http_starting": "サーバーの起動..."
+}
