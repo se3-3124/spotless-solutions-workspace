@@ -1,0 +1,27 @@
+name: 'Linting'
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v3.8.1
+      - name: Restore dependencies
+        run: npm install
+      - name: Run linter (Server)
+        run: npm run linter:lint -w server
+      - name: Run linter (Client)
+        run: npm run lint -w client

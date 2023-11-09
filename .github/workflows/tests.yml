@@ -1,0 +1,25 @@
+name: 'Tests'
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v3.8.1
+      - name: Restore dependencies
+        run: npm install
+      - name: Run linter
+        run: npm run test -w server
