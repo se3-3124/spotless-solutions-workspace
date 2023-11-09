@@ -1,6 +1,9 @@
 # Spotless Solutions
 
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
+[![Linting](https://github.com/se3-3124/spotless-solutions-workspace/actions/workflows/lint.yml/badge.svg)](https://github.com/se3-3124/spotless-solutions-workspace/actions/workflows/lint.yml)
+[![Tests](https://github.com/se3-3124/spotless-solutions-workspace/actions/workflows/tests.yml/badge.svg)](https://github.com/se3-3124/spotless-solutions-workspace/actions/workflows/tests.yml)
+
 
 A Cleaning Services Booking & Management System
 
