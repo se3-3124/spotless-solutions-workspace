@@ -22,5 +22,5 @@ export default interface IController {
    * @param {express.Request} req Request object
    * @param {express.Response} res Response object
    */
-  handler(req: express.Request, res: express.Response): void;
+  handler(req: express.Request, res: express.Response): void | Promise<void>;
 }
