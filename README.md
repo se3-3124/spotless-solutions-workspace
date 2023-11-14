@@ -56,7 +56,7 @@ to access backend API using [vite's proxy](https://vitejs.dev/config/server-opti
 Run the command:
 
 ```
-npm run db:push -w server
+npm -w server run database:push
 ```
 
 Whenever there's new changes to the model on the database, please run the command
