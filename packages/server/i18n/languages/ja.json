@@ -2,5 +2,6 @@
   "error_generic_start_failure": "例外が発生したため、Webサーバーの起動に失敗しました。",
   "error_stack_trace": "スタックトレース: {0}",
   "http_listening": "ポート({0})をリッスンしています： {1}",
-  "http_starting": "サーバーの起動..."
+  "http_starting": "サーバーの起動...",
+  "google_oauth_client_create_fail": "Google 用 OAuth2 クライアントを作成できません。 {0}"
 }
