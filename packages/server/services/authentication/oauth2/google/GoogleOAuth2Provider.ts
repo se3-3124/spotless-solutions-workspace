@@ -17,8 +17,8 @@ export default class GoogleOAuth2Provider implements IOAuth2Provider {
 
   private _createOAuth2Client() {
     const hostname = process.env.CLIENT_HOSTNAME ?? '';
-    const clientId = process.env.GOOGLE_CLIENT_ID ?? '';
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    const clientId = process.env.GOOGLE_OAUTH2_CLIENT_ID ?? '';
+    const clientSecret = process.env.GOOGLE_OAUTH2_CLIENT_SECRET;
 
     // Fail when one of the environment variables is not setup.
     if (!hostname || !clientId || !clientSecret) {
@@ -58,22 +58,39 @@ export default class GoogleOAuth2Provider implements IOAuth2Provider {
       return null;
     }
 
-    const response = await oAuth2Client.getToken(token);
-    oAuth2Client.setCredentials(response.tokens);
+    try {
+      const response = await oAuth2Client.getToken(token);
+      oAuth2Client.setCredentials(response.tokens);
 
-    // Set google
-    google.options({auth: oAuth2Client});
+      // Set google
+      google.options({auth: oAuth2Client});
 
-    // Set our OAuth2Client as auth on the current instance.
-    const oauth2 = google.oauth2('v2');
-    const userData = await oauth2.userinfo.get({});
+      // Set our OAuth2Client as auth on the current instance.
+      const oauth2 = google.oauth2('v2');
+      const userData = await oauth2.userinfo.get({});
 
-    return {
-      id: userData.data.id,
-      firstName: userData.data.given_name,
-      lastName: userData.data.family_name,
-      email: userData.data.email,
-    };
+      return {
+        id: userData.data.id,
+        firstName: userData.data.given_name,
+        lastName: userData.data.family_name,
+        email: userData.data.email,
+      };
+    } catch (e: unknown) {
+      const exception = e as Error;
+      if (!exception.stack) {
+        this._logger.logError(
+          i18next.t('google_fail_fetch_user_info'),
+          exception
+        );
+      } else {
+        this._logger.logError(
+          i18next.t('google_fail_fetch_user_info'),
+          exception.stack
+        );
+      }
+    }
+
+    return null;
   }
 
   getServiceType(): ServiceType {

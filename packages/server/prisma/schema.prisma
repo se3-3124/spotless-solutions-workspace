@@ -21,29 +21,31 @@ enum Role {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
-  first_name    String
-  last_name     String
-  phone_number  String      @unique
-  email         String      @unique
-  credential_id Int         @unique
-  role          Role
-  addresses     Address[]
-  credential    Credential  @relation(fields: [credential_id], references: [id])
+  id              Int         @id @default(autoincrement())
+  first_name      String
+  last_name       String
+  phone_number    String      @unique
+  email           String      @unique
+  email_validated Boolean     @default(false)
+  credential_id   Int         @unique
+  role            Role
+  addresses       Address[]
+  credential      Credential  @relation(fields: [credential_id], references: [id])
 }
 
 model Credential {
   id                Int               @id @default(autoincrement())
-  password_hash     String
+  password_hash     String?
   user              User[]
   account_bindings  AccountBinding[]
 }
 
 model AccountBinding {
-  id          Int                 @id @default(autoincrement())
-  type        AccountBindingType
-  account_id  Int                 @unique
-  credential  Credential[]
+  id            Int                 @id @default(autoincrement())
+  type          AccountBindingType
+  account_id    String              @unique
+  credential_id Int
+  credential    Credential          @relation(fields: [credential_id], references: [id])
 }
 
 model Address {

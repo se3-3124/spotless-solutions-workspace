@@ -3,5 +3,11 @@
   "error_stack_trace": "Stack trace: {0}",
   "http_listening": "Listening to port ({0}): {1}",
   "http_starting": "Starting server...",
-  "google_oauth_client_create_fail": "Unable to create OAuth2 client for Google. Param: {0}"
+  "google_oauth_client_create_fail": "Unable to create OAuth2 client for Google. Param: {0}",
+  "generic_400": "Bad Request",
+  "generic_500": "Unknown Server Error",
+  "google_fail_fetch_user_info": "An error occured for retrieving user information. Stack: {0}",
+  "google_registration_failure": "An error occured for registering user via google. Stack: {0}",
+  "registration_oauth_fail": "Registration from OAuth failed.",
+  "login_oauth_fail": "Login from OAuth failed."
 }
