@@ -9,5 +9,6 @@
   "google_fail_fetch_user_info": "ユーザー情報の取得でエラーが発生しました。 スタック: {0}",
   "google_registration_failure": "Google経由のユーザー登録でエラーが発生しました。 スタック: {0}",
   "registration_oauth_fail": "OAuthからの登録に失敗しました。",
-  "login_oauth_fail": "OAuthからのログインに失敗しました。"
+  "login_oauth_fail": "OAuthからのログインに失敗しました。",
+  "db_store_fatal": "テーブルに情報を格納する際にエラーが発生しました。 スタック: {0}"
 }

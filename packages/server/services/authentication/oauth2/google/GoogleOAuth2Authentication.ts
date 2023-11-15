@@ -1,8 +1,10 @@
 import {AccountBindingType, Role} from '@prisma/client';
 import IDatabase from '../../../database/IDatabase';
+import ILogger from '../../../../logging/ILogger';
 import {inject, injectable} from 'inversify';
 import IOAuth2Authentication from '../IOAuth2Authentication';
 import {IOAuth2Provider} from '../IOAuth2Provider';
+import i18next from 'i18next';
 
 @injectable()
 export default class GoogleOAuth2Authentication
@@ -10,13 +12,16 @@ export default class GoogleOAuth2Authentication
 {
   private readonly _auth: IOAuth2Provider;
   private readonly _context: IDatabase;
+  private readonly _logger: ILogger;
 
   constructor(
     @inject<IOAuth2Provider>('GoogleOAuth2Provider') auth: IOAuth2Provider,
-    @inject<IDatabase>('Database') context: IDatabase
+    @inject<IDatabase>('Database') context: IDatabase,
+    @inject<ILogger>('Logger') logger: ILogger
   ) {
     this._auth = auth;
     this._context = context;
+    this._logger = logger;
   }
 
   async login(token: string): Promise<{id: number} | null> {
@@ -78,34 +83,45 @@ export default class GoogleOAuth2Authentication
     const db = this._context.getDatabase();
 
     // Register user
-    const user = await db.user.create({
-      include: {
-        credential: {
-          include: {
-            account_bindings: true,
+    try {
+      const user = await db.user.create({
+        include: {
+          credential: {
+            include: {
+              account_bindings: true,
+            },
           },
         },
-      },
-      data: {
-        first_name: userInformation.firstName as string,
-        last_name: userInformation.lastName as string,
-        email: userInformation.email as string,
-        email_validated: true,
-        role: Role.USER,
-        phone_number: 'unset',
-        credential: {
-          create: {
-            account_bindings: {
-              create: {
-                type: AccountBindingType.GOOGLE,
-                account_id: userInformation.id as string,
+        data: {
+          first_name: userInformation.firstName as string,
+          last_name: userInformation.lastName as string,
+          email: userInformation.email as string,
+          email_validated: true,
+          role: Role.USER,
+          phone_number: 'unset',
+          credential: {
+            create: {
+              account_bindings: {
+                create: {
+                  type: AccountBindingType.GOOGLE,
+                  account_id: userInformation.id as string,
+                },
               },
             },
           },
         },
-      },
-    });
+      });
 
-    return {id: user.id};
+      return {id: user.id};
+    } catch (e: unknown) {
+      const exception = e as Error;
+      if (exception.stack) {
+        this._logger.logFatal(i18next.t('db_store_fatal'), exception.stack);
+      } else {
+        this._logger.logFatal(i18next.t('db_store_fatal'), exception);
+      }
+    }
+
+    return null;
   }
 }
