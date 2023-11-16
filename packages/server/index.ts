@@ -20,6 +20,9 @@ import IOAuth2Authentication from './services/authentication/oauth2/IOAuth2Authe
 import GoogleOAuth2Authentication from './services/authentication/oauth2/google/GoogleOAuth2Authentication';
 import LoginOAuthStateController from './controllers/api/auth/login/LoginOAuthStateController';
 import RegistrationStateController from './controllers/api/auth/registration/RegistrationStateController';
+import AbstractValidator from './validator/AbstractValidator';
+import IAbstractValidator from './validator/IAbstractValidator';
+import RegisterController from './controllers/api/auth/registration/RegisterController';
 
 const container = new Container();
 container.bind<ILogger>('Logger').to(LoggerManager);
@@ -34,14 +37,19 @@ container
   .to(GoogleOAuth2Authentication);
 
 // Services
-container.bind<IDatabase>('Database').to(Database);
+container.bind<IDatabase>('Database').to(Database).inSingletonScope();
 container.bind<IAuthentication>('AuthenticationService').to(Authentication);
+container
+  .bind<IAbstractValidator>('AbstractValidator')
+  .to(AbstractValidator)
+  .inSingletonScope();
 
 // Controller
+container.bind<IController>('Controller').to(RegisterController);
 container.bind<IController>('Controller').to(OAuth2RequestController);
 container.bind<IController>('Controller').to(OAuth2CallbackController);
 container.bind<IController>('Controller').to(LoginOAuthStateController);
-container.bind<IController>('Controlller').to(RegistrationStateController);
+container.bind<IController>('Controller').to(RegistrationStateController);
 
 const server = container.get<IServer>('WebServer');
 server.run();

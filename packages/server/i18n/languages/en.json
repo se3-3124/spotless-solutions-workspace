@@ -10,5 +10,6 @@
   "google_registration_failure": "An error occured for registering user via google. Stack: {0}",
   "registration_oauth_fail": "Registration from OAuth failed.",
   "login_oauth_fail": "Login from OAuth failed.",
-  "db_store_fatal": "An error occured storing information on table. Stack: {0}"
+  "db_store_fatal": "An error occured storing information on table. Stack: {0}",
+  "registration_store_failure": "Registration data failed to insert. Stack: {0}"
 }

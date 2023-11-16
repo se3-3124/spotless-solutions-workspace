@@ -28,6 +28,7 @@ export default class WebServer implements IServer {
     this._expressApplication = express();
 
     // Setup logger
+    this._expressApplication.use(express.json());
     this._expressApplication.use(logging(this._logger));
   }
 
