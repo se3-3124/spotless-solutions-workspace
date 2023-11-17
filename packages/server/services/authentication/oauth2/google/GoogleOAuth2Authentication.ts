@@ -1,10 +1,15 @@
 import {AccountBindingType, Role} from '@prisma/client';
+import i18next from 'i18next';
 import IDatabase from '../../../database/IDatabase';
 import ILogger from '../../../../logging/ILogger';
 import {inject, injectable} from 'inversify';
 import IOAuth2Authentication from '../IOAuth2Authentication';
 import {IOAuth2Provider} from '../IOAuth2Provider';
-import i18next from 'i18next';
+import {
+  ISessionTokenIssuer,
+  IssuedToken,
+  TokenIssuerError,
+} from '../../ISessionTokenIssuer';
 
 @injectable()
 export default class GoogleOAuth2Authentication
@@ -13,18 +18,22 @@ export default class GoogleOAuth2Authentication
   private readonly _auth: IOAuth2Provider;
   private readonly _context: IDatabase;
   private readonly _logger: ILogger;
+  private readonly _sessionIssuer: ISessionTokenIssuer;
 
   constructor(
     @inject<IOAuth2Provider>('GoogleOAuth2Provider') auth: IOAuth2Provider,
     @inject<IDatabase>('Database') context: IDatabase,
-    @inject<ILogger>('Logger') logger: ILogger
+    @inject<ILogger>('Logger') logger: ILogger,
+    @inject<ISessionTokenIssuer>('SessionTokenIssuer')
+    sessionIssuer: ISessionTokenIssuer
   ) {
     this._auth = auth;
     this._context = context;
     this._logger = logger;
+    this._sessionIssuer = sessionIssuer;
   }
 
-  async login(token: string): Promise<{id: number} | null> {
+  async login(token: string): Promise<IssuedToken | null> {
     const userInformation = await this._auth.getAccountInformation(token);
 
     // Fail registration when it is returned false.
@@ -58,9 +67,13 @@ export default class GoogleOAuth2Authentication
       return null;
     }
 
-    return {id: user.id};
-  }
+    const session = await this._sessionIssuer.sign(user.id, user.email);
+    if ((session as TokenIssuerError).error) {
+      return null;
+    }
 
+    return session as IssuedToken;
+  }
   async register(token: string): Promise<{id: number} | null> {
     const userInformation = await this._auth.getAccountInformation(token);
 

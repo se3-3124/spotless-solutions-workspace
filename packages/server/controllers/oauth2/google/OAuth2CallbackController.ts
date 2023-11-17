@@ -45,9 +45,7 @@ export default class OAuth2CallbackController implements IController {
         return res.redirect('/api/auth/registration/failure');
       }
 
-      return res.redirect(
-        `/api/auth/registration/success?id=${registration.id}`
-      );
+      return res.redirect('/api/auth/registration/success');
     }
 
     const login = await this._authentication.login(code as string);
@@ -55,6 +53,9 @@ export default class OAuth2CallbackController implements IController {
       return res.redirect('/api/auth/login/failure');
     }
 
-    return res.redirect(`/api/auth/login/success?id=${login.id}`);
+    // Set these to cookies
+    res.cookie('sst', login.token);
+    res.cookie('ssr', login.refreshToken);
+    return res.redirect('/api/auth/login/success');
   }
 }

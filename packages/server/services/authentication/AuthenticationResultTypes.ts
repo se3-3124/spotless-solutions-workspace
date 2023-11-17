@@ -2,7 +2,7 @@ export type RegistrationSuccess = {
   success: boolean;
 };
 
-export type RegistrationFailure = {
+export type AuthenticationFailure = {
   error: true;
   messages: string[];
 };

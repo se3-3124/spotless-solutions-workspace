@@ -11,5 +11,8 @@
   "registration_oauth_fail": "OAuthからの登録に失敗しました。",
   "login_oauth_fail": "OAuthからのログインに失敗しました。",
   "db_store_fatal": "テーブルに情報を格納する際にエラーが発生しました。 スタック: {0}",
-  "registration_store_failure": "登録データの挿入に失敗しました。スタック: {0}"
+  "registration_store_failure": "登録データの挿入に失敗しました。スタック: {0}",
+  "failed_sign_jwt": "JWT 署名に失敗しました。スタック： {0}",
+  "failed_resign_jwt": "JWTのリフレッシュに失敗しました。スタック: {0}",
+  "invalid_jwt": "無効なJWTトークンを受信しました。スタック: {0}"
 }

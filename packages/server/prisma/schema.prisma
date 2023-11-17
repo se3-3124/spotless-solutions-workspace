@@ -21,17 +21,27 @@ enum Role {
 }
 
 model User {
-  id                        Int         @id @default(autoincrement())
+  id                        Int           @id @default(autoincrement())
   first_name                String
   last_name                 String
-  phone_number              String      @unique
-  email                     String      @unique
-  email_validated           Boolean     @default(false)
-  credential_id             Int         @unique
-  accepted_terms_of_service Boolean     @default(false)
+  phone_number              String        @unique
+  email                     String        @unique
+  email_validated           Boolean       @default(false)
+  credential_id             Int           @unique
+  accepted_terms_of_service Boolean       @default(false)
   role                      Role
   addresses                 Address[]
-  credential                Credential  @relation(fields: [credential_id], references: [id])
+  tokens                    TokenIssued[]
+  credential                Credential    @relation(fields: [credential_id], references: [id])
+}
+
+model TokenIssued {
+  id            Int       @id @default(autoincrement())
+  refresh_token String
+  expires       DateTime
+  consumed      Boolean
+  user_id       Int
+  user          User      @relation(fields: [user_id], references: [id])
 }
 
 model Credential {

@@ -6,7 +6,7 @@ import IDatabase from '../database/IDatabase';
 import {inject, injectable} from 'inversify';
 import ILogger from '../../logging/ILogger';
 import {
-  RegistrationFailure,
+  AuthenticationFailure,
   RegistrationSuccess,
 } from './AuthenticationResultTypes';
 import {Role} from '@prisma/client';
@@ -14,27 +14,110 @@ import {
   UserRegistrationData,
   UserRegistrationDataSchema,
 } from './UserRegistrationData';
+import {
+  ISessionTokenIssuer,
+  IssuedToken,
+  TokenIssuerError,
+} from './ISessionTokenIssuer';
 
 @injectable()
 export default class Authentication implements IAuthentication {
   private readonly _validator: IAbstractValidator;
   private readonly _logger: ILogger;
   private readonly _context: IDatabase;
+  private readonly _session: ISessionTokenIssuer;
 
   constructor(
     @inject<IAbstractValidator>('AbstractValidator')
     validator: IAbstractValidator,
     @inject<ILogger>('Logger') logger: ILogger,
-    @inject<IDatabase>('Database') context: IDatabase
+    @inject<IDatabase>('Database') context: IDatabase,
+    @inject<ISessionTokenIssuer>('SessionTokenIssuer')
+    session: ISessionTokenIssuer
   ) {
     this._validator = validator;
     this._logger = logger;
     this._context = context;
+    this._session = session;
+  }
+
+  async login(
+    email: string,
+    password: string
+  ): Promise<IssuedToken | AuthenticationFailure> {
+    const validate = this._validator.validate<{
+      email: string;
+      password: string;
+    }>(
+      {
+        email,
+        password,
+      },
+      {
+        email: 'required|email',
+        password: 'required|min:8|password_complexity',
+      }
+    );
+
+    if (!validate.passed) {
+      return {
+        error: true,
+        messages: validate.errors!,
+      };
+    }
+
+    try {
+      const db = this._context.getDatabase();
+
+      const user = await db.user.findFirst({
+        include: {
+          credential: true,
+        },
+        where: {
+          email,
+          credential: {
+            password_hash: crypto
+              .createHash('sha256')
+              .update(password, 'utf-8')
+              .digest('hex'),
+          },
+        },
+      });
+
+      if (user === null) {
+        return {
+          error: true,
+          messages: ['Unauthorised'],
+        };
+      }
+
+      const session = await this._session.sign(user.id, user.email);
+      if ((session as TokenIssuerError).error) {
+        return {
+          error: true,
+          messages: [(session as TokenIssuerError).message],
+        };
+      }
+
+      return session as IssuedToken;
+    } catch (e) {
+      const exception = e as Error;
+      if (exception.stack) {
+        this._logger.logError(i18next.t('login_failure'), exception.stack);
+      } else {
+        this._logger.logError(i18next.t('login_failure'), exception);
+      }
+    }
+
+    return {
+      error: true,
+      messages: [i18next.t('generic_400')],
+    };
   }
 
   async register(
     data: UserRegistrationData
-  ): Promise<RegistrationSuccess | RegistrationFailure> {
+  ): Promise<RegistrationSuccess | AuthenticationFailure> {
     // Validate if the registration data received is ok
     const validate = this._validator.validate<UserRegistrationData>(
       data,

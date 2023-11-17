@@ -9,6 +9,7 @@ import IController from './IController';
 import {HTTPMethod} from './HTTPMethod';
 import i18next from 'i18next';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 @injectable()
 export default class WebServer implements IServer {
@@ -29,6 +30,7 @@ export default class WebServer implements IServer {
 
     // Setup logger
     this._expressApplication.use(express.json());
+    this._expressApplication.use(cookieParser());
     this._expressApplication.use(logging(this._logger));
   }
 

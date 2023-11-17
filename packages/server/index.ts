@@ -23,6 +23,10 @@ import RegistrationStateController from './controllers/api/auth/registration/Reg
 import AbstractValidator from './validator/AbstractValidator';
 import IAbstractValidator from './validator/IAbstractValidator';
 import RegisterController from './controllers/api/auth/registration/RegisterController';
+import JwtConfig from './services/authentication/JwtConfig';
+import SessionTokenIssuer from './services/authentication/SessionTokenIssuer';
+import {ISessionTokenIssuer} from './services/authentication/ISessionTokenIssuer';
+import LoginController from './controllers/api/auth/login/LoginController';
 
 const container = new Container();
 container.bind<ILogger>('Logger').to(LoggerManager);
@@ -38,6 +42,10 @@ container
 
 // Services
 container.bind<IDatabase>('Database').to(Database).inSingletonScope();
+container.bind<JwtConfig>('jwtConfig').to(JwtConfig).inSingletonScope();
+container
+  .bind<ISessionTokenIssuer>('SessionTokenIssuer')
+  .to(SessionTokenIssuer);
 container.bind<IAuthentication>('AuthenticationService').to(Authentication);
 container
   .bind<IAbstractValidator>('AbstractValidator')
@@ -46,6 +54,7 @@ container
 
 // Controller
 container.bind<IController>('Controller').to(RegisterController);
+container.bind<IController>('Controller').to(LoginController);
 container.bind<IController>('Controller').to(OAuth2RequestController);
 container.bind<IController>('Controller').to(OAuth2CallbackController);
 container.bind<IController>('Controller').to(LoginOAuthStateController);
