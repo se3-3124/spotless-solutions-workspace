@@ -62,12 +62,12 @@ npm -w server run database:push
 Whenever there's new changes to the model on the database, please run the command
 again to merge the changes into your database.
 
-### Building
+### Starting
 
 Run the command:
 
 ```
-npm run build
+npm start
 ```
 
 When running locally, you can just start the server by running `npm run start`.
