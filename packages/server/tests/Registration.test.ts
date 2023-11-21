@@ -1,69 +1,52 @@
 import 'reflect-metadata';
-import IDatabase from '../services/database/IDatabase';
-import {UserRegistrationData} from '../services/authentication/UserRegistrationData';
-import {PrismaClient} from '@prisma/client';
-// eslint-disable-next-line node/no-unpublished-import
-import {mockDeep} from 'jest-mock-extended';
-import ILogger from '../logging/ILogger';
+import 'dotenv/config';
 import Authentication from '../services/authentication/Authentication';
 import AbstractValidator from '../validator/AbstractValidator';
+import Database from './mocks/Database';
+import LoggerMock from './mocks/LoggerMock';
+import {UserRegistrationData} from '../services/authentication/UserRegistrationData';
+import SessionMock from './mocks/SessionMock';
 
 describe('Authentication tests', () => {
-  class MockDatabase implements IDatabase {
-    getDatabase(): PrismaClient {
-      return mockDeep<PrismaClient>();
-    }
-  }
-
-  class MockLogger implements ILogger {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    private _doNothing(d: string, r: (string | number | object)[]) {}
-
-    logError(format: string, ...replacer: (string | number | object)[]): void {
-      this._doNothing(format, replacer);
-    }
-    logFatal(format: string, ...replacer: (string | number | object)[]): void {
-      this._doNothing(format, replacer);
-    }
-    logInformation(
-      format: string,
-      ...replacer: (string | number | object)[]
-    ): void {
-      this._doNothing(format, replacer);
-    }
-    logWarning(
-      format: string,
-      ...replacer: (string | number | object)[]
-    ): void {
-      this._doNothing(format, replacer);
-    }
-  }
-
   it('Registers the user', async () => {
     const data: UserRegistrationData = {
       firstName: 'John',
       lastName: 'Doe',
-      email: 'johndoe@example.com',
+      email: 'johndoe4@example.com',
       password: 'j0Hn!D0e',
       phoneNumber: '+639111111111',
       tos: true,
     };
 
+    const db = new Database();
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      db,
+      new SessionMock()
     );
     const result = await fixture.register(data);
 
+    // Test if the user is registered
+    const user = await db.getDatabase().user.findFirst({
+      where: {
+        email: data.email,
+      },
+    });
+
     expect(result).toStrictEqual({success: true});
+    expect(user?.first_name).toEqual(data.firstName);
+    expect(user?.last_name).toEqual(data.lastName);
+    expect(user?.email).toEqual(data.email);
+    expect(user?.phone_number).toEqual(data.phoneNumber);
+    expect(user?.accepted_terms_of_service).toEqual(data.tos);
   });
 
   it('Fail to register when first name is not defined', async () => {
     const data: UserRegistrationData = {
       firstName: '',
       lastName: 'Doe',
-      email: 'johndoe@example.com',
+      email: 'johndoe5@example.com',
       password: 'j0Hn!D0e',
       phoneNumber: '+639111111111',
       tos: true,
@@ -71,8 +54,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      new Database(),
+      new SessionMock()
     );
     const result = await fixture.register(data);
 
@@ -86,7 +70,7 @@ describe('Authentication tests', () => {
     const data: UserRegistrationData = {
       firstName: 'John',
       lastName: '',
-      email: 'johndoe@example.com',
+      email: 'johndoe6@example.com',
       password: 'j0Hn!D0e',
       phoneNumber: '+639111111111',
       tos: true,
@@ -94,8 +78,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      new Database(),
+      new SessionMock()
     );
     const result = await fixture.register(data);
 
@@ -117,8 +102,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      new Database(),
+      new SessionMock()
     );
     const result = await fixture.register(data);
 
@@ -132,7 +118,7 @@ describe('Authentication tests', () => {
     const data: UserRegistrationData = {
       firstName: 'John',
       lastName: 'Doe',
-      email: 'johndoe@example.com',
+      email: 'johndoe7@example.com',
       password: 'johndoe',
       phoneNumber: '+639111111111',
       tos: true,
@@ -140,8 +126,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      new Database(),
+      new SessionMock()
     );
     const result = await fixture.register(data);
 
@@ -155,7 +142,7 @@ describe('Authentication tests', () => {
     const data: UserRegistrationData = {
       firstName: 'John',
       lastName: 'Doe',
-      email: 'johndoe@example.com',
+      email: 'johndoe8@example.com',
       password: 'j0Hn!D0e',
       phoneNumber: '1111',
       tos: true,
@@ -163,8 +150,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      new Database(),
+      new SessionMock()
     );
     const result = await fixture.register(data);
 
@@ -178,7 +166,7 @@ describe('Authentication tests', () => {
     const data: UserRegistrationData = {
       firstName: 'John',
       lastName: 'Doe',
-      email: 'johndoe@example.com',
+      email: 'johndoe9@example.com',
       password: 'j0Hn!D0e',
       phoneNumber: '+639111111111',
       tos: false,
@@ -186,8 +174,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new MockLogger(),
-      new MockDatabase()
+      new LoggerMock(),
+      new Database(),
+      new SessionMock()
     );
     const result = await fixture.register(data);
 

@@ -75,19 +75,39 @@ export default class Authentication implements IAuthentication {
         },
         where: {
           email,
-          credential: {
-            password_hash: crypto
-              .createHash('sha256')
-              .update(password, 'utf-8')
-              .digest('hex'),
-          },
         },
       });
 
       if (user === null) {
         return {
           error: true,
-          messages: ['Unauthorised'],
+          messages: ['Unauthorized'],
+        };
+      }
+
+      if (!user.credential.password_hash) {
+        return {
+          error: true,
+          messages: ['Unauthorized'],
+        };
+      }
+
+      const [salt, userPasswordHash] = user.credential.password_hash.split(':');
+      const passwordHash = crypto
+        .createHash('sha256')
+        .update(salt + password)
+        .digest('hex');
+
+      // Use crypto timingSafeEqual to prevent any timinx g attacks
+      if (
+        !crypto.timingSafeEqual(
+          Buffer.from(userPasswordHash, 'hex'),
+          Buffer.from(passwordHash, 'hex')
+        )
+      ) {
+        return {
+          error: true,
+          messages: ['Unauthorized'],
         };
       }
 
@@ -101,6 +121,7 @@ export default class Authentication implements IAuthentication {
 
       return session as IssuedToken;
     } catch (e) {
+      console.error(e);
       const exception = e as Error;
       if (exception.stack) {
         this._logger.logError(i18next.t('login_failure'), exception.stack);
@@ -111,7 +132,7 @@ export default class Authentication implements IAuthentication {
 
     return {
       error: true,
-      messages: [i18next.t('generic_400')],
+      messages: ['Unauthorized'],
     };
   }
 
@@ -154,9 +175,12 @@ export default class Authentication implements IAuthentication {
         };
       }
 
+      // Create a random 32 length salt as base64
+      const salt = crypto.randomBytes(32).toString('base64');
+
       const hash = crypto
         .createHash('sha256')
-        .update(data.password)
+        .update(salt + data.password)
         .digest('hex');
 
       await db.user.create({
@@ -173,7 +197,7 @@ export default class Authentication implements IAuthentication {
           accepted_terms_of_service: data.tos,
           credential: {
             create: {
-              password_hash: hash,
+              password_hash: salt + ':' + hash,
             },
           },
         },
@@ -182,6 +206,7 @@ export default class Authentication implements IAuthentication {
       return {success: true};
     } catch (e) {
       // Log the data
+      console.error(e);
       const exception = e as Error;
       if (!exception.stack) {
         this._logger.logFatal(
