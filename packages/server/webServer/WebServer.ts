@@ -55,7 +55,17 @@ export default class WebServer implements IServer {
         controller.getEndpoint(),
         cors(corsOptionDelegate as cors.CorsOptionsDelegate<cors.CorsRequest>),
         (req: express.Request, res: express.Response) => {
-          controller.handler(req, res);
+          try {
+            controller.handler(req, res);
+          } catch (e) {
+            this._logger.logError(
+              i18next.t('webserver_failure'),
+              (e as Error).stack!
+            );
+
+            res.status(500);
+            res.end();
+          }
         },
       ] as const;
 

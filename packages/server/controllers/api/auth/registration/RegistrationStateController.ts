@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import IController from '../../../../webServer/IController';
 import {injectable} from 'inversify';
 import {HTTPMethod} from '../../../../webServer/HTTPMethod';
+import {Ipware} from '@fullerstack/nax-ipware';
 
 @injectable()
 export default class RegistrationStateController implements IController {
