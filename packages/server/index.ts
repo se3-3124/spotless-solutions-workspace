@@ -27,6 +27,7 @@ import JwtConfig from './services/authentication/JwtConfig';
 import SessionTokenIssuer from './services/authentication/SessionTokenIssuer';
 import {ISessionTokenIssuer} from './services/authentication/ISessionTokenIssuer';
 import LoginController from './controllers/api/auth/login/LoginController';
+import LogoutController from './controllers/api/auth/LogoutController';
 
 const container = new Container();
 container.bind<ILogger>('Logger').to(LoggerManager);
@@ -59,6 +60,7 @@ container.bind<IController>('Controller').to(OAuth2RequestController);
 container.bind<IController>('Controller').to(OAuth2CallbackController);
 container.bind<IController>('Controller').to(LoginOAuthStateController);
 container.bind<IController>('Controller').to(RegistrationStateController);
+container.bind<IController>('Controller').to(LogoutController);
 
 const server = container.get<IServer>('WebServer');
 server.run();
