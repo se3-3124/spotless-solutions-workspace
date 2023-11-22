@@ -13,9 +13,13 @@ export default interface IController {
   getEndpoint(): string;
 
   /**
-   * Flag when the controller is disabled for access
+   * Add middleware into your controller.
    */
-  isDisabled(): boolean;
+  middleware?(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): void | Promise<void>;
 
   /**
    * Handler for the current controller

@@ -28,6 +28,8 @@ import SessionTokenIssuer from './services/authentication/SessionTokenIssuer';
 import {ISessionTokenIssuer} from './services/authentication/ISessionTokenIssuer';
 import LoginController from './controllers/api/auth/login/LoginController';
 import LogoutController from './controllers/api/auth/LogoutController';
+import IIpAddressLockout from './services/authentication/IIpAddressLockout';
+import IpAddressLockoutManager from './services/authentication/IpAddressLockoutManager';
 
 const container = new Container();
 container.bind<ILogger>('Logger').to(LoggerManager);
@@ -52,6 +54,9 @@ container
   .bind<IAbstractValidator>('AbstractValidator')
   .to(AbstractValidator)
   .inSingletonScope();
+container
+  .bind<IIpAddressLockout>('IpAddressLockout')
+  .to(IpAddressLockoutManager);
 
 // Controller
 container.bind<IController>('Controller').to(RegisterController);

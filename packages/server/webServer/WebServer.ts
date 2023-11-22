@@ -8,7 +8,6 @@ import logging from './middlewares/logging';
 import IController from './IController';
 import {HTTPMethod} from './HTTPMethod';
 import i18next from 'i18next';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 @injectable()
@@ -16,9 +15,6 @@ export default class WebServer implements IServer {
   private readonly _logger: ILogger;
   private readonly _controllers: IController[];
   private readonly _expressApplication: Express;
-
-  // Settings
-  private readonly _allowedHosts: string[] = [];
 
   constructor(
     @inject('Logger') logger: ILogger,
@@ -39,21 +35,23 @@ export default class WebServer implements IServer {
    * @private
    */
   private _mapControllers() {
-    const corsOptionDelegate = (
-      req: cors.CorsRequest,
-      callback: (e: null, o: {cors: boolean}) => void
-    ) => {
-      if (this._allowedHosts.indexOf(req.headers['Origin'] as string)) {
-        return callback(null, {cors: true});
-      }
-
-      return callback(null, {cors: false});
-    };
-
     for (const controller of this._controllers) {
       const args = [
+        // Endpoint path
         controller.getEndpoint(),
-        cors(corsOptionDelegate as cors.CorsOptionsDelegate<cors.CorsRequest>),
+
+        // Middleware Function
+        (
+          req: express.Request,
+          res: express.Response,
+          next: express.NextFunction
+        ) => {
+          // When middleware on controller doesn't configured, then just proceed.
+          if (!controller.middleware) return next();
+          controller.middleware(req, res, next);
+        },
+
+        // Actual route handler
         (req: express.Request, res: express.Response) => {
           try {
             controller.handler(req, res);
@@ -160,10 +158,6 @@ export default class WebServer implements IServer {
         this._logger.logFatal(i18next.t('error_stack_trace'), exception.stack);
       }
     }
-  }
-
-  addCorsOrigin(host: string) {
-    this._allowedHosts.push(host);
   }
 
   run(): void {

@@ -14,5 +14,6 @@
   "registration_store_failure": "登録データの挿入に失敗しました。スタック: {0}",
   "failed_sign_jwt": "JWT 署名に失敗しました。スタック： {0}",
   "failed_resign_jwt": "JWTのリフレッシュに失敗しました。スタック: {0}",
-  "invalid_jwt": "無効なJWTトークンを受信しました。スタック: {0}"
+  "invalid_jwt": "無効なJWTトークンを受信しました。スタック: {0}",
+  "jsonwebtoken_unset": "JWTシークレットが設定されていない！"
 }

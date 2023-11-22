@@ -1,15 +1,15 @@
+import ControllerBase from '../../../../webServer/ControllerBase';
 import e from 'express';
 import {AuthenticationFailure} from '../../../../services/authentication/AuthenticationResultTypes';
 import {HTTPMethod} from '../../../../webServer/HTTPMethod';
 import IAuthentication from '../../../../services/authentication/IAuthentication';
-import IController from '../../../../webServer/IController';
 import IIpAddressLockout from '../../../../services/authentication/IIpAddressLockout';
 import {inject, injectable} from 'inversify';
 import {Ipware} from '@fullerstack/nax-ipware';
 import {IssuedToken} from '../../../../services/authentication/ISessionTokenIssuer';
 
 @injectable()
-export default class LoginController implements IController {
+export default class LoginController extends ControllerBase {
   private readonly _authentication: IAuthentication;
   private readonly _lockout: IIpAddressLockout;
 
@@ -18,6 +18,7 @@ export default class LoginController implements IController {
     authentication: IAuthentication,
     @inject<IIpAddressLockout>('IpAddressLockout') lockout: IIpAddressLockout
   ) {
+    super(lockout);
     this._authentication = authentication;
     this._lockout = lockout;
   }
@@ -32,14 +33,6 @@ export default class LoginController implements IController {
 
   async handler(req: e.Request, res: e.Response): Promise<void> {
     const ip = new Ipware().getClientIP(req);
-
-    const isBlocked = await this._lockout.isBlocked(ip!.ip);
-    if (isBlocked) {
-      res.status(429);
-      res.json({error: true, message: 'Too many requests.'});
-
-      return;
-    }
 
     const result = await this._authentication.login(
       req.body?.email,

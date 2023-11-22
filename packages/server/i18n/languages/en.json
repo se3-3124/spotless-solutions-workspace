@@ -14,5 +14,6 @@
   "registration_store_failure": "Registration data failed to insert. Stack: {0}",
   "failed_sign_jwt": "Failed to sign JWT. Stack: {0}",
   "failed_resign_jwt": "Failed to refresh JWT. Stack: {0}",
-  "invalid_jwt": "Invalid JWT token received."
+  "invalid_jwt": "Invalid JWT token received.",
+  "jsonwebtoken_unset": "JWT secret is not set!"
 }
