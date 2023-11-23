@@ -22,6 +22,9 @@ jobs:
       - name: Restore dependencies
         run: npm install
       - name: Run linter (Server)
+        env:
+          JSONWEBTOKEN_SECRET: 'helloworld'
+          DATABASE_URL: 'postgresql://postgres@localhost:5432/test_db?schema=public'
         run: npm run linter:lint -w server
       - name: Run linter (Client)
         run: npm run lint -w client

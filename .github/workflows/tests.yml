@@ -21,5 +21,8 @@ jobs:
         uses: actions/setup-node@v3.8.1
       - name: Restore dependencies
         run: npm install
-      - name: Run linter
+      - name: Run tests
+        env:
+          JSONWEBTOKEN_SECRET: 'helloworld'
+          DATABASE_URL: 'postgresql://postgres@localhost:5432/test_db?schema=public'
         run: npm run test -w server

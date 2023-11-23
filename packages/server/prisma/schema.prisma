@@ -9,3 +9,80 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum AccountBindingType {
+  GOOGLE
+  FACEBOOK
+}
+
+enum Role {
+  ADMINISTRATOR
+  USER
+}
+
+model User {
+  id                        Int           @id @default(autoincrement())
+  first_name                String
+  last_name                 String
+  phone_number              String        @unique
+  email                     String        @unique
+  email_validated           Boolean       @default(false)
+  credential_id             Int           @unique
+  accepted_terms_of_service Boolean       @default(false)
+  role                      Role
+  addresses                 Address[]
+  tokens                    TokenIssued[]
+  issued_reset_tokens       IssuedResetTokens[]
+  credential                Credential    @relation(fields: [credential_id], references: [id])
+}
+
+model TokenIssued {
+  id            Int       @id @default(autoincrement())
+  refresh_token String
+  expires       DateTime
+  consumed      Boolean
+  user_id       Int
+  user          User      @relation(fields: [user_id], references: [id])
+}
+
+model Credential {
+  id                Int               @id @default(autoincrement())
+  password_hash     String?
+  user              User[]
+  account_bindings  AccountBinding[]
+}
+
+model AccountBinding {
+  id            Int                 @id @default(autoincrement())
+  type          AccountBindingType
+  account_id    String              @unique
+  credential_id Int
+  credential    Credential          @relation(fields: [credential_id], references: [id])
+}
+
+model IssuedResetTokens {
+  id        Int       @id @default(autoincrement())
+  expires   DateTime
+  token     String
+  user_id   Int
+  consumed  Boolean   @default(false)
+  user      User      @relation(fields: [user_id], references: [id])
+}
+
+model Address {
+  id          Int     @id @default(autoincrement())
+  street      String
+  district    String
+  barangay    String
+  postal_code String
+  province    String
+  user_id     Int
+  user        User    @relation(fields: [user_id], references: [id])
+}
+
+model IpAddressLockoutTable {
+  id            Int       @id @default(autoincrement())
+  ip_address    String
+  attempts      Int       @default(0)
+  next_attempt  DateTime?
+}
