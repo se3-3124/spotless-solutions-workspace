@@ -6,7 +6,9 @@ import {
   IssuedToken,
   TokenIssuerError,
 } from '../services/authentication/ISessionTokenIssuer';
+import {injectable} from 'inversify';
 
+@injectable()
 export default abstract class ProtectedController implements IController {
   private readonly _session: ISessionTokenIssuer;
 
@@ -22,7 +24,7 @@ export default abstract class ProtectedController implements IController {
     // Check incoming cookies.
     const {sst, ssr} = req.cookies;
 
-    const isValid = await this._session.verify(sst);
+    const isValid = this._session.verify(sst);
     if (!isValid) {
       res.status(401);
       res.json({error: true, message: 'Session expired.'});

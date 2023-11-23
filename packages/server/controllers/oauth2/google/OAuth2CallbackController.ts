@@ -38,24 +38,25 @@ export default class OAuth2CallbackController implements IController {
       return;
     }
 
+    const hostname = process.env.GUI_HOSTNAME;
     if (state === 'registration_state') {
       const registration = await this._authentication.register(code as string);
 
       if (!registration) {
-        return res.redirect('/api/auth/registration/failure');
+        return res.redirect(`${hostname}/auth/google/register/failure`);
       }
 
-      return res.redirect('/api/auth/registration/success');
+      return res.redirect(`${hostname}/auth/google/register/success`);
     }
 
     const login = await this._authentication.login(code as string);
     if (!login) {
-      return res.redirect('/api/auth/login/failure');
+      return res.redirect(`${hostname}/auth/google/failure`);
     }
 
     // Set these to cookies
     res.cookie('sst', login.token);
     res.cookie('ssr', login.refreshToken);
-    return res.redirect('/api/auth/login/success');
+    return res.redirect(`${hostname}/auth/google/success`);
   }
 }

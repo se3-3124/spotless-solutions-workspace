@@ -41,20 +41,20 @@ export default class WebServer implements IServer {
         controller.getEndpoint(),
 
         // Middleware Function
-        (
+        async (
           req: express.Request,
           res: express.Response,
           next: express.NextFunction
         ) => {
           // When middleware on controller doesn't configured, then just proceed.
           if (!controller.middleware) return next();
-          controller.middleware(req, res, next);
+          await controller.middleware(req, res, next);
         },
 
         // Actual route handler
-        (req: express.Request, res: express.Response) => {
+        async (req: express.Request, res: express.Response) => {
           try {
-            controller.handler(req, res);
+            await controller.handler(req, res);
           } catch (e) {
             this._logger.logError(
               i18next.t('webserver_failure'),
