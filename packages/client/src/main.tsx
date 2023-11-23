@@ -4,11 +4,9 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from 'react-router-dom';
-// import './index.css'
-import Home from './home-page/home-page.tsx';
+import Home from './pages/home-page/home-page.tsx';
 import SignUp from './registration-page/registration-page.tsx';
-import LogIn from './login-page/login-page.tsx';
-import AnotherWorld from './pages/AnotherWorld.tsx';
+import LogIn from './pages/login-page/login-page.tsx';
 
 const router = createBrowserRouter([
     {
@@ -16,15 +14,11 @@ const router = createBrowserRouter([
         element: <Home />,
     },
     {
-        path: "/another-world/:id",
-        element: <AnotherWorld />
-    },
-    {
-      path: "/SignUp",
+      path: "/signup",
       element: <SignUp />
     },
     {
-      path: "/LogIn",
+      path: "/login",
       element: <LogIn />
     }
 ]);

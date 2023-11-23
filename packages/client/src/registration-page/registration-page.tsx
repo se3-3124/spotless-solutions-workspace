@@ -1,5 +1,5 @@
 import './registration-page.css'
-import Navbar from '../home-page/navbar.tsx';
+import Navbar from '../pages/home-page/navbar.tsx';
 
 export default function SignUp() {
     return (
