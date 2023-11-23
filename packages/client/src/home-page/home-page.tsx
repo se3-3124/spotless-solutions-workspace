@@ -1,5 +1,6 @@
 import './home-page.css';
 import Navbar from './navbar.tsx';
+import Footer from '../Component/Footer';
 
 export default function Home() {
     return (
@@ -96,6 +97,7 @@ export default function Home() {
 
                 </div>
             </section>
+            <Footer />
         </>
     )
   }

@@ -1,5 +1,3 @@
-
-import React from "react";
 import { FiPhone } from "react-icons/fi";
 import { GrLocation } from "react-icons/gr";
 import { FaFacebookSquare } from "react-icons/fa";
