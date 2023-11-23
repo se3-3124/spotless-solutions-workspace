@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.loginBg {
+    background-image: url('../../../../public/house-cleaning-service.jpeg');
+}
+
+.loginSize {
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+    padding-bottom: 15px;
+}

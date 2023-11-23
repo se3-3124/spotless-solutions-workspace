@@ -27,6 +27,10 @@ export default defineConfig({
       '/api': {
         target: `http${isHttps() ? 's' : ''}://localhost:${isHttps() ? process.env.HTTPS_PORT : process.env.HTTP_PORT}`,
         secure: false,
+      },
+      '/oauth': {
+        target: `http${isHttps() ? 's' : ''}://localhost:${isHttps() ? process.env.HTTPS_PORT : process.env.HTTP_PORT}`,
+        secure: false,
       }
     },
     ...configureHttps()

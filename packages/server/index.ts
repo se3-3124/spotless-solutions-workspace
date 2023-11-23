@@ -35,6 +35,7 @@ import IMailer from './services/mailer/IMailer';
 import RecoverAccountController from './controllers/api/auth/recovery/RecoverAccountController';
 import RequestPasswordResetController from './controllers/api/auth/recovery/RequestPasswordResetController';
 import ValidateRecoveryToken from './controllers/api/auth/recovery/ValidateRecoveryToken';
+import CheckAuthController from './controllers/api/auth/CheckAuthController';
 
 const container = new Container();
 container.bind<ILogger>('Logger').to(LoggerManager);
@@ -75,6 +76,7 @@ container.bind<IController>('Controller').to(LogoutController);
 container.bind<IController>('Controller').to(RecoverAccountController);
 container.bind<IController>('Controller').to(RequestPasswordResetController);
 container.bind<IController>('Controller').to(ValidateRecoveryToken);
+container.bind<IController>('Controller').to(CheckAuthController);
 
 const server = container.get<IServer>('WebServer');
 server.run();

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.signupBg {
+    background-image: url('house-cleaning-service.jpeg');
+}
+
+.signupSize {
+    display: flex;
+    flex-direction: column;
+    padding-top: 90px;
+    padding-bottom: 14px;
+}

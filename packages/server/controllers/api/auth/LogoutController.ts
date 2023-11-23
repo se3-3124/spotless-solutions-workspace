@@ -10,7 +10,7 @@ export default class LogoutController implements IController {
   }
 
   getMethod(): HTTPMethod {
-    return HTTPMethod.Post;
+    return HTTPMethod.Get;
   }
 
   async handler(req: e.Request, res: e.Response): Promise<void> {
