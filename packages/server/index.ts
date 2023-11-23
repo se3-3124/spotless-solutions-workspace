@@ -30,6 +30,11 @@ import LoginController from './controllers/api/auth/login/LoginController';
 import LogoutController from './controllers/api/auth/LogoutController';
 import IIpAddressLockout from './services/authentication/IIpAddressLockout';
 import IpAddressLockoutManager from './services/authentication/IpAddressLockoutManager';
+import SMTPMailer from './services/mailer/SMTPMailer';
+import IMailer from './services/mailer/IMailer';
+import RecoverAccountController from './controllers/api/auth/recovery/RecoverAccountController';
+import RequestPasswordResetController from './controllers/api/auth/recovery/RequestPasswordResetController';
+import ValidateRecoveryToken from './controllers/api/auth/recovery/ValidateRecoveryToken';
 
 const container = new Container();
 container.bind<ILogger>('Logger').to(LoggerManager);
@@ -57,6 +62,7 @@ container
 container
   .bind<IIpAddressLockout>('IpAddressLockout')
   .to(IpAddressLockoutManager);
+container.bind<IMailer>('Mailer').to(SMTPMailer);
 
 // Controller
 container.bind<IController>('Controller').to(RegisterController);
@@ -66,6 +72,9 @@ container.bind<IController>('Controller').to(OAuth2CallbackController);
 container.bind<IController>('Controller').to(LoginOAuthStateController);
 container.bind<IController>('Controller').to(RegistrationStateController);
 container.bind<IController>('Controller').to(LogoutController);
+container.bind<IController>('Controller').to(RecoverAccountController);
+container.bind<IController>('Controller').to(RequestPasswordResetController);
+container.bind<IController>('Controller').to(ValidateRecoveryToken);
 
 const server = container.get<IServer>('WebServer');
 server.run();

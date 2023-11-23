@@ -3,9 +3,13 @@ import 'dotenv/config';
 import Authentication from '../services/authentication/Authentication';
 import AbstractValidator from '../validator/AbstractValidator';
 import Database from './mocks/Database';
-import LoggerMock from './mocks/LoggerMock';
 import {UserRegistrationData} from '../services/authentication/UserRegistrationData';
-import SessionMock from './mocks/SessionMock';
+import {mockLogging} from './mocks/mockLogging';
+import {mockSession} from './mocks/mockSession';
+
+const db = new Database();
+const logging = mockLogging();
+const session = mockSession();
 
 describe('Authentication tests', () => {
   it('Registers the user', async () => {
@@ -18,12 +22,11 @@ describe('Authentication tests', () => {
       tos: true,
     };
 
-    const db = new Database();
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
+      logging,
       db,
-      new SessionMock()
+      session
     );
     const result = await fixture.register(data);
 
@@ -54,9 +57,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
-      new Database(),
-      new SessionMock()
+      logging,
+      db,
+      session
     );
     const result = await fixture.register(data);
 
@@ -78,9 +81,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
-      new Database(),
-      new SessionMock()
+      logging,
+      db,
+      session
     );
     const result = await fixture.register(data);
 
@@ -102,9 +105,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
-      new Database(),
-      new SessionMock()
+      logging,
+      db,
+      session
     );
     const result = await fixture.register(data);
 
@@ -126,9 +129,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
-      new Database(),
-      new SessionMock()
+      logging,
+      db,
+      session
     );
     const result = await fixture.register(data);
 
@@ -150,9 +153,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
-      new Database(),
-      new SessionMock()
+      logging,
+      db,
+      session
     );
     const result = await fixture.register(data);
 
@@ -174,9 +177,9 @@ describe('Authentication tests', () => {
 
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
-      new Database(),
-      new SessionMock()
+      logging,
+      db,
+      session
     );
     const result = await fixture.register(data);
 

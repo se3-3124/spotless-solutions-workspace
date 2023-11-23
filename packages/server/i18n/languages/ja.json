@@ -15,5 +15,12 @@
   "failed_sign_jwt": "JWT 署名に失敗しました。スタック： {0}",
   "failed_resign_jwt": "JWTのリフレッシュに失敗しました。スタック: {0}",
   "invalid_jwt": "無効なJWTトークンを受信しました。スタック: {0}",
-  "jsonwebtoken_unset": "JWTシークレットが設定されていない！"
+  "jsonwebtoken_unset": "JWTシークレットが設定されていない！",
+  "email_not_configured": "SMTP の電子メールが設定されていません！E: {0}, P: {1}",
+  "email_sent_accepted": "メールが送信されました。データ: {0}",
+  "email_sent_rejected": "メールが拒否されました。データ: {0}",
+  "no_email_found_requesting_reset": "存在しないアカウントのパスワードリセット IDを入力してください： {0}",
+  "email_port_misconfigured": "SMTPポートの設定が間違っている。 Port: {0}",
+  "password_update_fail": "パスワードの更新に失敗しました。 Stack: {0}",
+  "invalid_token_request_password_reset": "パスワードリセット用のトークンが無効です。 Token: {0}"
 }

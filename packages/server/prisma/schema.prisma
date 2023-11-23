@@ -32,6 +32,7 @@ model User {
   role                      Role
   addresses                 Address[]
   tokens                    TokenIssued[]
+  issued_reset_tokens       IssuedResetTokens[]
   credential                Credential    @relation(fields: [credential_id], references: [id])
 }
 
@@ -57,6 +58,15 @@ model AccountBinding {
   account_id    String              @unique
   credential_id Int
   credential    Credential          @relation(fields: [credential_id], references: [id])
+}
+
+model IssuedResetTokens {
+  id        Int       @id @default(autoincrement())
+  expires   DateTime
+  token     String
+  user_id   Int
+  consumed  Boolean   @default(false)
+  user      User      @relation(fields: [user_id], references: [id])
 }
 
 model Address {

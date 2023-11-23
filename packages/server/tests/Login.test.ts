@@ -4,10 +4,10 @@ import Database from './mocks/Database';
 import {Role} from '@prisma/client';
 import Authentication from '../services/authentication/Authentication';
 import AbstractValidator from '../validator/AbstractValidator';
-import LoggerMock from './mocks/LoggerMock';
-import SessionMock from './mocks/SessionMock';
 import {IssuedToken} from '../services/authentication/ISessionTokenIssuer';
 import {AuthenticationFailure} from '../services/authentication/AuthenticationResultTypes';
+import {mockLogging} from './mocks/mockLogging';
+import {mockSession} from './mocks/mockSession';
 
 describe('Login tests', () => {
   beforeAll(async () => {
@@ -43,15 +43,18 @@ describe('Login tests', () => {
     const email = 'xd.doe@email.com';
     const password = 'l3emA0-eKsDeE';
 
+    const logging = mockLogging();
+    const session = mockSession();
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
+      logging,
       new Database(),
-      new SessionMock()
+      session
     );
 
     const run = await fixture.login(email, password);
 
+    expect(session.sign).toHaveBeenCalledTimes(1);
     expect((run as AuthenticationFailure).messages).toBeUndefined();
     expect((run as AuthenticationFailure).error).toBeUndefined();
     expect((run as IssuedToken).token).toBeTruthy();
@@ -62,15 +65,18 @@ describe('Login tests', () => {
     const email = 'xd.doe@email.com';
     const password = 'l4emA0-eKsDeE';
 
+    const logging = mockLogging();
+    const session = mockSession();
     const fixture = new Authentication(
       new AbstractValidator(),
-      new LoggerMock(),
+      logging,
       new Database(),
-      new SessionMock()
+      session
     );
 
     const run = await fixture.login(email, password);
 
+    expect(session.sign).toHaveBeenCalledTimes(0);
     expect((run as AuthenticationFailure).error).toBe(true);
     expect((run as AuthenticationFailure).messages).toStrictEqual([
       'Unauthorized',

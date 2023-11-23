@@ -23,4 +23,23 @@ export default interface IAuthentication {
   register(
     data: UserRegistrationData
   ): Promise<RegistrationSuccess | AuthenticationFailure>;
+
+  /**
+   * Request for password reset
+   * @param {string} email
+   */
+  requestForResetPassword(email: string): Promise<string | null>;
+
+  /**
+   * Validate whether the password reset token is valid
+   * @param token
+   */
+  validatePasswordResetToken(token: string): Promise<boolean>;
+
+  /**
+   * Reset password
+   * @param {string} token
+   * @param {string} newPassword
+   */
+  resetPassword(token: string, newPassword: string): Promise<boolean>;
 }

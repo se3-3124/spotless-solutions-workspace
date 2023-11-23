@@ -226,4 +226,130 @@ export default class Authentication implements IAuthentication {
       };
     }
   }
+
+  async requestForResetPassword(email: string): Promise<string | null> {
+    const validator = this._validator.validate<{email: string}>(
+      {
+        email,
+      },
+      {
+        email: 'required|email',
+      }
+    );
+
+    if (!validator.passed) {
+      return null;
+    }
+
+    const db = this._context.getDatabase();
+
+    // Look for the user first.
+    const user = await db.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      this._logger.logWarning(
+        i18next.t('no_email_found_requesting_reset'),
+        email
+      );
+      return null;
+    }
+
+    // Generate password reset
+    const passwordResetToken = crypto.randomBytes(64).toString('base64');
+
+    await db.issuedResetTokens.create({
+      data: {
+        consumed: false,
+        token: passwordResetToken,
+        expires: new Date(Date.now() + 1800000),
+        user_id: user.id,
+      },
+    });
+
+    return passwordResetToken;
+  }
+
+  async validatePasswordResetToken(token: string): Promise<boolean> {
+    const db = this._context.getDatabase();
+
+    const issuedToken = await db.issuedResetTokens.findFirst({
+      where: {
+        token: token,
+      },
+    });
+
+    if (!issuedToken) {
+      this._logger.logWarning(
+        i18next.t('invalid_token_request_password_reset'),
+        token
+      );
+      return false;
+    }
+
+    // Check token whether if its consumed and still before the expiration
+    // time
+    return issuedToken.consumed && issuedToken.expires.getDate() < Date.now();
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<boolean> {
+    const db = this._context.getDatabase();
+
+    try {
+      const issuedToken = await db.issuedResetTokens.findFirst({
+        where: {
+          token: token,
+        },
+      });
+
+      if (!issuedToken) {
+        this._logger.logWarning(
+          i18next.t('invalid_token_request_password_reset'),
+          token
+        );
+        return false;
+      }
+
+      if (issuedToken.consumed && issuedToken.expires.getDate() < Date.now()) {
+        return false;
+      }
+
+      // Update password
+      const salt = crypto.randomBytes(32).toString('base64');
+
+      const hash = crypto
+        .createHash('sha256')
+        .update(salt + newPassword)
+        .digest('hex');
+
+      await db.user.update({
+        where: {
+          id: issuedToken.user_id,
+        },
+        include: {
+          credential: true,
+        },
+        data: {
+          credential: {
+            update: {
+              password_hash: hash,
+            },
+          },
+        },
+      });
+
+      return true;
+    } catch (e) {
+      const exception = e as Error;
+      this._logger.logError(
+        i18next.t('password_update_fail'),
+        exception.stack!
+      );
+    }
+
+    return false;
+  }
 }
