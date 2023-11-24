@@ -292,7 +292,7 @@ export default class Authentication implements IAuthentication {
 
     // Check token whether if its consumed and still before the expiration
     // time
-    return issuedToken.consumed && issuedToken.expires.getDate() < Date.now();
+    return !issuedToken.consumed && issuedToken.expires.getDate() < Date.now();
   }
 
   async resetPassword(token: string, newPassword: string): Promise<boolean> {
@@ -313,7 +313,7 @@ export default class Authentication implements IAuthentication {
         return false;
       }
 
-      if (issuedToken.consumed && issuedToken.expires.getDate() < Date.now()) {
+      if (issuedToken.consumed || issuedToken.expires.getDate() > Date.now()) {
         return false;
       }
 
@@ -335,9 +335,18 @@ export default class Authentication implements IAuthentication {
         data: {
           credential: {
             update: {
-              password_hash: hash,
+              password_hash: `${salt}:${hash}`,
             },
           },
+        },
+      });
+
+      await db.issuedResetTokens.update({
+        where: {
+          id: issuedToken.id,
+        },
+        data: {
+          consumed: true,
         },
       });
 
