@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .loginBg {
-    background-image: url('house-cleaning-service.jpeg');
+    background-image: url('../../../public/house-cleaning-service.jpeg');
 }
 
 .loginSize {

@@ -10,6 +10,8 @@ import OAuthGoogleFailure from './pages/oauth/google/Failure.tsx';
 import OAuthGoogleSuccess from './pages/oauth/google/Success.tsx';
 import OAuthGoogleSuccessSignup from './pages/oauth/google/SignUpSuccess.tsx';
 import Dashboard from './pages/dashboard/Dashboard.tsx';
+import RecoveryPrompt from './pages/password-recovery/recovery-prompt.tsx';
+import RecoveryRecover from './pages/password-recovery/recovery-recover.tsx';
 
 const router = createBrowserRouter([
     {
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
         path: "/auth/google/failure",
         element: <OAuthGoogleFailure />
     },
+    {
+        path: "/recovery",
+        element: <RecoveryPrompt />
+    },
+    {
+        path: "/recovery/change",
+        element: <RecoveryRecover />
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

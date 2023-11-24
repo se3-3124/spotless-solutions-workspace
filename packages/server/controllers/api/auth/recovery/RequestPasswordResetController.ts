@@ -46,7 +46,7 @@ export default class RequestPasswordResetController extends ControllerBase {
       to: email,
       html: `
         <p>
-          <a href="${process.env.CLIENT_HOSTNAME}/api/auth/recovery?token=${result}">
+          <a href="${process.env.GUI_HOSTNAME}/recovery/change?token=${result}">
                 Click here to recover your account
             </a>
         </p>

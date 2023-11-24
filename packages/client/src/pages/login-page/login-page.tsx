@@ -2,6 +2,8 @@ import {useState} from 'react';
 import './login-page.css';
 import Navbar from '../home-page/navbar.tsx';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
+import Footer from '../../Components/Footer.tsx';
 
 type LoginState = {
     email: string;
@@ -83,6 +85,12 @@ export default function LogIn() {
                                     Log In
                                 </button>
                             </div>
+                            <div className="mt-8">
+                                <p className='text-center'>
+                                    Forgot?&nbsp;
+                                    <Link to="/recovery"><b className='text-fruityorange'>Reset here</b></Link>.
+                                </p>
+                            </div>
                             <div className="mt-4 flex items-center justify-between">
                                 <span className="border-b w-1 md:w-1/3"></span>
                                 <p className="text-xs text-gray-500 uppercase">OR</p>
@@ -100,11 +108,15 @@ export default function LogIn() {
                                     </div>
                                 </a>
                             </div>
-                            <p className='flex justify-center mt-4 text-sm'>Don’t have an account? <a href=''><b className='text-fruityorange'> Sign Up</b></a></p>
+                            <p className='flex justify-center mt-4 text-sm'>
+                                Don’t have an account?&nbsp;
+                                <Link to="/signup"><b className='text-fruityorange'>Sign Up</b></Link>
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
+            <Footer />
         </>
     )
 }
