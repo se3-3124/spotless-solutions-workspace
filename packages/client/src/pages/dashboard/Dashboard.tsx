@@ -1,7 +1,6 @@
 import {useEffect} from 'react';
 import './dashboard.css';
 import Navbar from '../home-page/navbar.tsx';
-import Footer from '../../Components/Footer.tsx';
 import axios from 'axios';
 
 export default function Dashboard() {
@@ -36,7 +35,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </section>
-            <Footer />
         </>
     )
 }

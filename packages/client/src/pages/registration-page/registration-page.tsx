@@ -2,8 +2,7 @@ import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import './registration-page.css'
-import Navbar from '../home-page/navbar.tsx';
-import Footer from '../../Components/Footer.tsx';
+import PageContentCommons from '../../Components/PageContentCommons.tsx';
 
 type UserState = {
     email: string;
@@ -62,8 +61,7 @@ export default function SignUp() {
     }
 
     return (
-        <>
-            <Navbar />
+        <PageContentCommons active={-1}>
             <section className='signupSize bg-midnightblue'>
                 <div className="py-16">
                     <div className="flex bg-white rounded-lg shadow-lg overflow-x-auto mx-auto max-w-sm lg:max-w-4xl">
@@ -150,12 +148,12 @@ export default function SignUp() {
                             <div className='grid gap-1 mb-1 md:grid-cols-2 mt-4'>
                                 <a href="/oauth2/google/oauth2request?state=registration_state" className="flex justify-center mt-4 hover:bg-gray-100">
                                     <div className="px-4 py-3">
-                                        <img src='/google.png' className=" h-8 w-8" />                                 
+                                        <img src='/google.png' className=" h-8 w-8" />
                                     </div>
                                 </a>
                                 <a href="#" className="flex justify-center mt-4 hover:bg-gray-100">
                                     <div className="px-4 py-3">
-                                        <img src='/facebook.png' className=" h-8 w-8" />                                 
+                                        <img src='/facebook.png' className=" h-8 w-8" />
                                     </div>
                                 </a>
                             </div>
@@ -167,7 +165,6 @@ export default function SignUp() {
                     </div>
                 </div>
             </section>
-            <Footer />
-        </>
+        </PageContentCommons>
     )
 }

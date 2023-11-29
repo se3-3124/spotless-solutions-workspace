@@ -1,8 +1,9 @@
-import {useState, useEffect} from 'react';
-import '../login-page/login-page.css';
-import Navbar from '../home-page/navbar.tsx';
+
 import axios from 'axios';
-import Footer from '../../Components/Footer.tsx';
+import {useState, useEffect} from 'react';
+
+import '../login-page/login-page.css';
+import PageContentCommons from '../../Components/PageContentCommons.tsx';
 
 type RecoveryState = {
     password: string;
@@ -91,8 +92,7 @@ export default function RecoveryRecover() {
     }
 
     return (
-        <>
-            <Navbar />
+        <PageContentCommons active={-1}>
             <section className='signupSize bg-midnightblue' style={{height: '80vh'}}>
                 <div className="py-16">
                     <div className="flex bg-white rounded-lg shadow-lg overflow-x-auto mx-auto max-w-sm lg:max-w-4xl">
@@ -141,7 +141,6 @@ export default function RecoveryRecover() {
                     </div>
                 </div>
             </section>
-            <Footer />
-        </>
+        </PageContentCommons>
     )
 }
