@@ -3,7 +3,7 @@ import React from 'react';
 import Toolbar from '@mui/material/Toolbar';
 
 import './PageContentCommons.scss';
-import tdLogo from '../../public/td_logo.jpg';
+import tdLogo from '../assets/td_logo.jpg';
 
 export type WrapAroundProps = {
   active: number;

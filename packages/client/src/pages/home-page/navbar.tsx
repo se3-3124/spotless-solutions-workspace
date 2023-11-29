@@ -6,7 +6,7 @@ export default function Navbar() {
         <nav className="bg-midnightblue fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="../../../public/td_logo.jpg" className="h-16" alt="Topdown Logo" />
+                    <img src="../../assets/td_logo.jpg" className="h-16" alt="Topdown Logo" />
                 </Link>
                 <div className ="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <Link to="/LogIn" className='block py-2 px-3 text-white'>Log In</Link>

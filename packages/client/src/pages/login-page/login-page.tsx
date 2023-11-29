@@ -98,12 +98,12 @@ export default function LogIn() {
                             <div className='grid gap-1 mb-1 md:grid-cols-2 mt-4'>
                                 <a href="/oauth2/google/oauth2request"  className="flex justify-center mt-4 hover:bg-gray-100">
                                     <div className="px-4 py-3">
-                                        <img src='/google.png' className=" h-8 w-8" />
+                                        <img src='/packages/client/src/assets/google.png' className=" h-8 w-8" />
                                     </div>
                                 </a>
                                 <a href="#" className="flex justify-center mt-4 hover:bg-gray-100">
                                     <div className="px-4 py-3">
-                                        <img src='/facebook.png' className=" h-8 w-8" />
+                                        <img src='/packages/client/src/assets/facebook.png' className=" h-8 w-8" />
                                     </div>
                                 </a>
                             </div>

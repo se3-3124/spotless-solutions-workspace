@@ -1,5 +1,5 @@
 import './home-page.css';
-import tdLogo from '../../../public/td_logo.jpg';
+import tdLogo from '../../assets/td_logo.jpg';
 import PageContentCommons from '../../Components/PageContentCommons.tsx';
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex items-start font-montserrat my-6 mr-10">
-                        <img src='/cleaning_services_hp2.png' alt='' className="h-7 mr-4" />
+                        <img src='/packages/client/src/assets/cleaning_services_hp2.png' alt='' className="h-7 mr-4" />
                         <div>
                             <h3 className="font-semibold text-2xl">Post Con Cleaning</h3>
                             <h6 className='secondarySpacing'>ABOUT</h6>
@@ -53,7 +53,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex items-start font-montserrat my-6 mr-10">
-                        <img src='/cleaning_services_hp3.png' alt='' className="h-7 mr-4" />
+                        <img src='/packages/client/src/assets/cleaning_services_hp3.png' alt='' className="h-7 mr-4" />
                         <div>
                             <h3 className="font-semibold text-2xl">Routine Cleaning</h3>
                             <h6 className='secondarySpacing'>ABOUT</h6>
@@ -68,7 +68,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex items-start font-montserrat my-6 mr-10">
-                        <img src='/cleaning_services_hp1.png' alt='' className="h-7 mr-4" />
+                        <img src='/packages/client/src/assets/cleaning_services_hp1.png' alt='' className="h-7 mr-4" />
                         <div>
                             <h3 className="font-semibold text-2xl">General Cleaning</h3>
                             <h6 className='secondarySpacing'>ABOUT</h6>
