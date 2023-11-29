@@ -12,6 +12,7 @@ import OAuthGoogleSuccessSignup from './pages/oauth/google/SignUpSuccess.tsx';
 import Dashboard from './pages/dashboard/Dashboard.tsx';
 import RecoveryPrompt from './pages/password-recovery/recovery-prompt.tsx';
 import RecoveryRecover from './pages/password-recovery/recovery-recover.tsx';
+import './index.css';
 
 const router = createBrowserRouter([
     {

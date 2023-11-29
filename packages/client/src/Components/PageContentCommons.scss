@@ -1,0 +1,96 @@
+@use 'tailwindcss/base.css';
+@use 'tailwindcss/components.css';
+@use 'tailwindcss/utilities.css';
+
+.navbar-main {
+    @apply fixed;
+    @apply w-full;
+    @apply bg-midnightblue;
+    @apply block;
+    @apply p-4;
+
+    & .navbar-menu-wrapper {
+        @apply flex;
+        @apply flex-grow;
+        @apply flex-row;
+        @apply font-medium;
+        @apply items-center;
+        @apply justify-center;
+
+        & a {
+            @apply sm:hidden;
+            @apply md:block;
+            @apply py-2;
+            @apply px-3;
+            @apply text-white;
+
+            &.selected {
+                @apply font-bold;
+                @apply text-fruityorange;
+            }
+
+            &:hover {
+                @apply text-fruityorange;
+            }
+        }
+    }
+
+    & .navbar-right-side {
+        @apply flex;
+        @apply flex-row;
+
+        & .btn {
+            @apply py-2;
+            @apply px-3;
+
+            &.login-button {
+                @apply text-white;
+            }
+
+            &.signup-button {
+                @apply bg-fruityorange;
+                @apply text-white;
+                @apply font-medium;
+                @apply rounded-lg;
+                @apply text-sm;
+                @apply text-center;
+
+                &:hover {
+                    @apply bg-white;
+                    @apply text-midnightblue;
+                }
+
+                &:focus {
+                    @apply ring-4;
+                    @apply outline-none;
+                    @apply ring-blue-300;
+                }
+            }
+        }
+    }
+}
+
+.footer {
+    @apply w-full;
+    @apply bg-midnightblue;
+    @apply p-12;
+    @apply text-white;
+
+    & .contents {
+        @apply flex;
+        @apply flex-row;
+
+        & .contact-field {
+            @apply ml-40;
+            @apply flex-grow;
+        }
+    }
+
+    & .divider {
+        @apply mt-12;
+        @apply mb-12;
+        @apply h-1;
+        @apply w-full;
+        @apply bg-white;
+    }
+}
