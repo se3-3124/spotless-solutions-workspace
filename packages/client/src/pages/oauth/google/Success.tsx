@@ -1,11 +1,10 @@
 import './failure.css';
-import Navbar from '../../home-page/navbar.tsx';
-import Footer from '../../../Components/Footer.tsx';
+import PageContentCommons from '../../../Components/PageContentCommons.tsx';
 
 export default function OAuthGoogleSuccess() {
     return (
         <>
-            <Navbar />
+            <PageContentCommons active={0}>
             <section className='loginSize bg-midnightblue'>
                 <div className="py-16">
                     <div className="flex bg-white rounded-lg shadow-lg overflow-x-auto mx-auto max-w-sm lg:max-w-4xl">
@@ -20,7 +19,7 @@ export default function OAuthGoogleSuccess() {
                     </div>
                 </div>
             </section>
-            <Footer />
+            </PageContentCommons>
         </>
     )
 }
