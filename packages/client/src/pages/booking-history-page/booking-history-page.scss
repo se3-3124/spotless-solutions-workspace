@@ -1,0 +1,38 @@
+@use 'tailwindcss/base.css';
+@use 'tailwindcss/components.css';
+@use 'tailwindcss/utilities.css';
+
+.header {
+  @apply pt-24;
+  @apply pl-20;
+  @apply flex;
+  @apply flex-col;
+
+  & .h1 {
+    @apply text-5xl;
+    @apply font-bold;
+    @apply pt-5;
+    @apply pb-7;
+  }
+} 
+
+
+.table-container {
+  @apply px-20;
+  @apply md:mt-0;
+  @apply md:h-screen;
+  @apply flex;
+  @apply flex-col;
+  @apply text-center;
+
+  & .table-main {
+    @apply table-auto;
+    @apply border-collapse;
+    @apply border;
+    @apply border-slate-400;
+
+    & .th {
+      @apply bg-[#D9D9D9];
+    }
+  }
+}
