@@ -12,6 +12,8 @@ import OAuthGoogleSuccessSignup from './pages/oauth/google/SignUpSuccess.tsx';
 import Dashboard from './pages/dashboard/Dashboard.tsx';
 import RecoveryPrompt from './pages/password-recovery/recovery-prompt.tsx';
 import RecoveryRecover from './pages/password-recovery/recovery-recover.tsx';
+import UserNavbar from './Components/UserPageContentCommons.tsx';
+import AdminNavbar from './Components/AdminPageContentCommons.tsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -54,6 +56,14 @@ const router = createBrowserRouter([
     {
         path: "/recovery/change",
         element: <RecoveryRecover />
+    },
+    {
+        path: "/usernavbar",
+        element: <UserNavbar />
+    },
+    {
+        path: "/adminnavbar",
+        element: <AdminNavbar />
     }
 ]);
 

@@ -12,6 +12,7 @@
     "packages/client"
   ],
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "flowbite-react": "^0.7.0"
   }
 }
