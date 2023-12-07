@@ -50,7 +50,7 @@ const SidePanel = () => {
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="topdown_logo.png"
+            src="./packages/client/public/topdown_logo.png"
             className={`cursor-pointer duration-500 h-10 ${open}`}
           />
           <h1
