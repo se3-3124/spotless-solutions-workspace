@@ -40,7 +40,7 @@ const SidePanel = () => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-[#05132F] h-screen p-5  pt-8 relative duration-300`}
+        } bg-[#05132F] h-screen p-5  pt-8 relative duration-300 border-r-2 border-[#EDA15B]`}
       >
         <img
           src="./packages/client/public/control.png"
